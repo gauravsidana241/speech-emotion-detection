@@ -1,0 +1,6 @@
+# ignore models and datasets
+model/
+datasets/
+
+# ignore prepared train and test splits
+*.csv
