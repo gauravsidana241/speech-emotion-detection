@@ -1,6 +1,7 @@
 # ignore models and datasets
 model/
 datasets/
+augmented_audio/
 
 # ignore prepared train and test splits
 *.csv
