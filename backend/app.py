@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 from transformers import Wav2Vec2Model
 from pydub import AudioSegment
+import urllib.request
 import os
 
 app = Flask(__name__)
@@ -15,6 +16,13 @@ EMOTIONS = ['angry', 'disgust', 'fearful', 'happy', 'neutral', 'sad']
 SAMPLE_RATE = 16000
 DURATION = 5
 TARGET_LENGTH = SAMPLE_RATE * DURATION
+MODEL_URL = "https://huggingface.co/gaurav241/ser-emotion-model/resolve/main/emotion_model.pth"
+MODEL_PATH = "model/emotion_model.pth"
+
+if not os.path.exists(MODEL_PATH):
+    os.makedirs("model", exist_ok=True)
+    print("Downloading model...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
 
 # Model definition (must match training)
 class Wav2Vec2EmotionClassifier(nn.Module):
