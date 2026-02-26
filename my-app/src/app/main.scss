@@ -1,0 +1,376 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=Space+Mono:wght@400;700&display=swap');
+
+$bg: #0a0a0f;
+$surface: #14141f;
+$surface-light: #1e1e2e;
+$border: #2a2a3d;
+$accent: #6c5ce7;
+$accent-glow: rgba(108, 92, 231, 0.3);
+$red: #ff4757;
+$red-glow: rgba(255, 71, 87, 0.4);
+$text: #e8e8ed;
+$text-muted: #7a7a8e;
+$text-dim: #4a4a5e;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: $bg;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(255, 71, 87, 0.04) 0%, transparent 60%);
+}
+
+.dialog-box {
+  width: min(520px, 90vw);
+  padding: 32px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-shadow:
+    0 4px 40px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(108, 92, 231, 0.05);
+}
+
+// ── Header ──
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .title-group {
+    h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $text;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: $text-muted;
+      margin-top: 4px;
+    }
+  }
+
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: $accent;
+    background: rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    padding: 5px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: $accent;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+  }
+}
+
+// ── Recorder Area ──
+.recorder-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  .hint {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: $text-dim;
+    }   
+}
+
+// ── Visualizer ──
+.visualizer {
+  width: 100%;
+  height: 100px;
+  background: $surface-light;
+  border: 1px solid $border;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  .bars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 60%;
+
+    .bar {
+      width: 4px;
+      height: 20%;
+      background: $text-dim;
+      border-radius: 4px;
+      transition: height 0.1s ease, background 0.3s ease;
+    }
+  }
+
+  &.active .bars .bar {
+    background: $accent;
+    animation: wave 0.6s ease-in-out infinite alternate;
+    box-shadow: 0 0 6px $accent-glow;
+  }
+}
+
+
+
+// ── Timer ──
+.timer-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: $surface-light;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, $accent, $red);
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+  }
+
+  .time-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: $red;
+    letter-spacing: 0.03em;
+  }
+}
+
+// ── Controls ──
+.controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mic-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $text;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  .mic-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: $surface-light;
+    border: 2px solid $border;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  &:hover .mic-icon {
+    border-color: $accent;
+    box-shadow: 0 0 20px $accent-glow;
+  }
+
+  &.recording .mic-icon {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: $red;
+    box-shadow: 0 0 24px $red-glow;
+    animation: pulse-ring 1.5s ease-in-out infinite;
+  }
+
+  &.recording {
+    color: $red;
+  }
+}
+
+// ── Post Recording ──
+.post-recording {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+
+  .audio-player {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    filter: invert(1) hue-rotate(180deg) brightness(0.85);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+.btn-analyze {
+  flex: 1;
+  padding: 12px 20px;
+  background: $accent;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &:hover {
+    background: lighten($accent, 5%);
+    box-shadow: 0 4px 20px $accent-glow;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.btn-reset {
+  padding: 12px 20px;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $text-muted;
+    color: $text;
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+// ── Result Card ──
+.result-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: $surface-light;
+  border: 1px solid $border;
+  border-radius: 14px;
+  animation: slide-up 0.4s ease-out;
+
+  .result-emoji {
+    font-size: 2.4rem;
+  }
+
+  .result-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .result-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .result-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $accent;
+      text-transform: capitalize;
+    }
+  }
+}
+
+// ── Footer ──
+.footer {
+  text-align: center;
+
+  p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: $text-dim;
+  }
+}
+
+// ── Animations ──
+@keyframes wave {
+  0% { height: 15%; }
+  100% { height: 85%; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 $red-glow; }
+  50% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
